@@ -10,6 +10,7 @@
 
 /* 2. PARCHMENT BACKGROUND */
 body {
+  padding-top: 120px !important;
   background-color: var(--map-bg) !important;
   background-image: url("https://www.transparenttextures.com/patterns/aged-paper.png");
   color: var(--ink-color) !important;
