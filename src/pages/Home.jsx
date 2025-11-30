@@ -1,31 +1,36 @@
 import React from 'react';
 import { Container, Button, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import logo from '../assets/logo.png'; // 1. Import your logo here
+import logo from '../assets/logo.png'; 
 
 const Home = () => {
   return (
-    // Wrapper div to hold everything relative
-    <div style={{ position: 'relative', minHeight: '80vh', overflow: 'hidden' }}>
+    // 1. Added paddingTop: '120px' to push everything down
+    <div style={{ 
+      position: 'relative', 
+      minHeight: '100vh', 
+      overflow: 'hidden',
+      paddingTop: '120px' 
+    }}>
       
-      {/* 2. BACKGROUND LOGO LAYER (The Watermark) */}
+      {/* BACKGROUND LOGO LAYER (Watermark) */}
       <div style={{
         position: 'absolute',
         top: '50%',
         left: '50%',
-        transform: 'translate(-50%, -50%)', // Center perfectly
-        width: '600px',  // Size of the logo background
+        transform: 'translate(-50%, -50%)',
+        width: '600px',
         height: '600px',
         backgroundImage: `url(${logo})`,
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'contain',
-        opacity: 0.1,    // 10% Visibility (Very faint watermark)
-        zIndex: -1       // Put it BEHIND the text
+        opacity: 0.1,    
+        zIndex: -1       
       }}></div>
 
-      {/* 3. Your Main Content */}
-      <Container className="text-center py-5">
+      {/* Main Content */}
+      <Container className="text-center">
         <Row className="justify-content-center align-items-center" style={{ minHeight: '60vh' }}>
           <Col md={8}>
             <h1 className="display-3 fw-bold mb-4">Welcome to My Portfolio</h1>
