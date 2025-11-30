@@ -1,106 +1,96 @@
 import React, { useState, useEffect } from 'react';
-import { Container, ListGroup, Button, Alert, Spinner } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import api from '../api'; // Your API helper
+import { FaCode, FaRobot, FaDatabase, FaCogs, FaTasks, FaEdit, FaTrash } from 'react-icons/fa'; // Import icons
+import api from '../api';
 
 const Services = () => {
-    // 1. Hardcoded data from your 'old' component (used as fallback)
-    const staticServices = [
-        { _id: 'static-1', title: 'Web Development', description: 'React, Node.js, and Full-Stack MERN applications.' },
-        { _id: 'static-2', title: 'Erection & Commissioning Engineering', description: 'Oversight and management of industrial plant start-up.' },
-        { _id: 'static-3', title: 'Project Coordination & Site Management', description: 'Efficient planning, execution, and site safety management.' },
-        { _id: 'static-4', title: 'Database Management (MongoDB, SQL)', description: 'Designing, maintaining, and optimizing database solutions.' },
-        { _id: 'static-5', title: 'Technical Documentation & Reporting', description: 'Creating clear and precise technical guides and reports.' },
-        { _id: 'static-6', title: 'Customer Service & Technical Support', description: 'Providing technical assistance and resolving customer issues.' },
-        { _id: 'static-7', title: 'AI Agents developer (Chatbots)', description: 'Building and deploying conversational AI and chatbot solutions.' },
-    ];
+  const [services, setServices] = useState([]);
+  const [error, setError] = useState('');
+  
+  // Check login status
+  const isLoggedIn = !!localStorage.getItem('token');
 
-    const [services, setServices] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+  const fetchServices = async () => {
+    try {
+      const res = await api.get('/services');
+      setServices(res.data);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to load services.");
+    }
+  };
 
-    // 2. Function to fetch data from the API
-    const fetchServices = async () => {
-        try {
-            setLoading(true);
-            const res = await api.get('/services');
-            
-            if (res.data && res.data.length > 0) {
-                // If API returns data, use it
-                setServices(res.data);
-            } else {
-                // If API returns empty array, use static data
-                setServices(staticServices);
-                setError("Note: API returned no services. Displaying static fallback data.");
-            }
-        } catch (err) {
-            console.error("API Fetch Error:", err);
-            // If API call fails entirely, use static data
-            setServices(staticServices);
-            setError("Error fetching services from API. Displaying static fallback data.");
-        } finally {
-            setLoading(false);
-        }
-    };
+  useEffect(() => {
+    fetchServices();
+  }, []);
 
-    useEffect(() => {
-        fetchServices();
-    }, []);
+  const handleDelete = async (id) => {
+    if (!window.confirm("Delete this service?")) return;
+    try {
+      await api.delete(`/services/${id}`);
+      fetchServices(); // Refresh list
+    } catch (err) {
+      alert("Failed to delete service.");
+    }
+  };
 
-    // 3. Handle Delete (Note: Delete only works on MongoDB items, not static ones)
-    const handleDelete = async (id) => {
-        if (!id.startsWith('static-')) { // Only try to delete if it's not a static item
-            if (window.confirm("Delete this service?")) {
-                try {
-                    await api.delete(`/services/${id}`);
-                    // Re-fetch data instead of reloading the entire page
-                    fetchServices();
-                } catch (err) {
-                    console.error("Delete Error:", err);
-                    alert("Error deleting service from the backend.");
-                }
-            }
-        } else {
-            alert("Cannot delete hardcoded static service items.");
-        }
-    };
+  // Helper to pick a relevant icon
+  const getIcon = (title) => {
+    const t = title.toLowerCase();
+    if (t.includes('mern') || t.includes('web')) return <FaCode size={40} className="mb-3 text-primary"/>;
+    if (t.includes('ai') || t.includes('bot')) return <FaRobot size={40} className="mb-3 text-success"/>;
+    if (t.includes('data') || t.includes('sql')) return <FaDatabase size={40} className="mb-3 text-warning"/>;
+    if (t.includes('erection') || t.includes('commissioning')) return <FaCogs size={40} className="mb-3 text-secondary"/>;
+    if (t.includes('management') || t.includes('coordination')) return <FaTasks size={40} className="mb-3 text-info"/>;
+    return <FaCode size={40} className="mb-3 text-dark"/>; // Default
+  };
 
-    return (
-        <Container className="py-5 mt-5">
-            <div className="d-flex justify-content-between align-items-center mb-4">
-                <h2>Services I Offer</h2>
-                {/* The Add button is still functional for API-based services */}
-                <Button as={Link} to="/services/add" variant="success">Add Service</Button>
-            </div>
+  return (
+    <Container className="py-5 mt-5">
+      <div className="d-flex justify-content-between align-items-center mb-5">
+        <h2 className="fw-bold">Services I Offer</h2>
+        {isLoggedIn && (
+          <Button as={Link} to="/services/add" variant="success">Add Service</Button>
+        )}
+      </div>
 
-            {loading && <div className="text-center"><Spinner animation="border" /> Loading services...</div>}
-            
-            {/* Display error/fallback message */}
-            {error && <Alert variant={error.includes("Note") ? "info" : "danger"}>{error}</Alert>}
+      {error && <Alert variant="danger">{error}</Alert>}
 
-            <ListGroup variant="flush" className="shadow-sm">
-                {services.map(s => (
-                    <ListGroup.Item key={s._id} className="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5>{s.title}</h5>
-                            {/* Display description for the new format */}
-                            <p className="text-muted mb-0">{s.description || 'No description provided'}</p> 
-                        </div>
-                        <div>
-                            {/* Buttons only appear if we are NOT using the static fallback, 
-                                OR if you want to explicitly check if it's a real MongoDB item */}
-                            {!s._id.startsWith('static-') && (
-                                <>
-                                    <Button as={Link} to={`/services/edit/${s._id}`} variant="outline-warning" size="sm" className="me-2">Edit</Button>
-                                    <Button variant="outline-danger" size="sm" onClick={() => handleDelete(s._id)}>Delete</Button>
-                                </>
-                            )}
-                        </div>
-                    </ListGroup.Item>
-                ))}
-            </ListGroup>
-        </Container>
-    );
+      <Row>
+        {services.map((s) => (
+          <Col md={6} lg={4} key={s._id} className="mb-4">
+            <Card className="h-100 border-0 shadow-sm hover-card" style={{ transition: 'all 0.3s ease' }}>
+              <Card.Body className="text-center p-4">
+                {/* 1. The Icon */}
+                {getIcon(s.title)}
+                
+                {/* 2. The Title */}
+                <Card.Title className="fw-bold mb-3">{s.title}</Card.Title>
+                
+                {/* 3. The Description */}
+                <Card.Text className="text-muted text-start">
+                  {s.description}
+                </Card.Text>
+
+                {/* 4. Admin Buttons (Only if logged in) */}
+                {isLoggedIn && (
+                  <div className="d-flex justify-content-center gap-2 mt-4 pt-3 border-top">
+                    <Button as={Link} to={`/services/edit/${s._id}`} variant="outline-warning" size="sm">
+                      <FaEdit /> Edit
+                    </Button>
+                    <Button variant="outline-danger" size="sm" onClick={() => handleDelete(s._id)}>
+                      <FaTrash /> Delete
+                    </Button>
+                  </div>
+                )}
+              </Card.Body>
+            </Card>
+          </Col>
+        ))}
+      </Row>
+    </Container>
+  );
 };
 
 export default Services;
