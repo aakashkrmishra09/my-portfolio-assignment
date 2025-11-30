@@ -8,6 +8,7 @@ import api from '../api';
 import proj1 from '../assets/proj1.png';
 import proj2 from '../assets/proj2.png'; 
 import proj3 from '../assets/proj3.png'; 
+import proj4 from '../assets/proj4.jpg';
 
 // --- TEMPORARY FALLBACK DATA ---
 const staticProjects = [
@@ -41,7 +42,7 @@ const Projects = () => {
     const [error, setError] = useState(null);
 
     // 2. CREATE AN ARRAY OF IMAGES TO CYCLE THROUGH
-    const projectImages = [proj1, proj2, proj3];
+    const projectImages = [proj1, proj2, proj3, proj4];
 
     useEffect(() => {
         fetchProjects();
