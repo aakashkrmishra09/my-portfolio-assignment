@@ -4,14 +4,24 @@ import { Link } from 'react-router-dom';
 
 const Home = () => {
   return (
-    <div className="d-flex align-items-center justify-content-center text-center vh-100" 
-         // Adds faint line pattern to the parchment background
-         style={{ 
-           backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(74,44,42,0.05) 10px, rgba(74,44,42,0.05) 20px)' 
-         }}>
-      <Container style={{ border: '4px double #4a2c2a', padding: '50px', maxWidth: '800px' }}>
-        
-        {/* The main title, using the Satisfy handwritten font */}
+    <div 
+        className="d-flex align-items-start justify-content-center text-center min-vh-100" 
+        style={{ 
+            backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(74,44,42,0.05) 10px, rgba(74,44,42,0.05) 20px)',
+            paddingTop: '50px' // Ensures content starts below the very top edge
+        }}
+    >
+      
+      <Container 
+            style={{ 
+                marginTop: '150px', // FIX: Pushes the container down below the fixed navbar
+                border: '4px double #4a2c2a', 
+                padding: '50px', 
+                maxWidth: '800px',
+                backgroundColor: 'rgba(255, 255, 255, 0.4)' // Slight background for text pop
+            }}
+        >
+        
         <h1 className="display-1 mb-4" style={{ fontFamily: 'Satisfy' }}>Messrs. Moony, Wormtail, Padfoot, and Prongs</h1>
         <h2 className="mb-4">Purveyors of Aids to Magical Mischief-Makers<br/>are proud to present</h2>
         
@@ -20,12 +30,11 @@ const Home = () => {
           AAKASH KUMAR MISHRA'S PORTFOLIO
         </h1>
 
-        {/* Mission Statement from old code, themed */}
-        <p className="lead mb-5">
-            Mission Statement: “Once a mechanical engineer, now crafting intelligence through software.”
-        </p>
+        {/* Mission Statement from old code, themed */}
+        <p className="lead mb-5">
+            Mission Statement: “Once a mechanical engineer, now crafting intelligence through software.”
+        </p>
 
-        {/* Themed Navigation Buttons */}
         <div className="d-flex justify-content-center gap-4">
           <Button as={Link} to="/projects" size="lg">
             Reveal Secrets (Projects)
@@ -35,7 +44,6 @@ const Home = () => {
           </Button>
         </div>
         
-        {/* Thematic Note */}
         <p className="mt-5 text-muted" style={{ fontFamily: 'Homemade Apple' }}>
           *Tap the footprints to navigate the castle...
         </p>
