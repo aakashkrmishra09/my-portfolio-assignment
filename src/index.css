@@ -1,83 +1,22 @@
-/* 1. IMPORT HANDWRITTEN FONTS */
-@import url('https://fonts.googleapis.com/css2?family=Homemade+Apple&family=Satisfy&family=IM+Fell+English+SC&display=swap');
+/* client/src/index.css */
 
-:root {
-  --map-bg: #dccfbc;         /* Parchment Beige */
-  --ink-color: #4a2c2a;      /* Faded Brown/Red Ink */
-  --footprint-color: #3e2723;
-  --faded-ink: rgba(74, 44, 42, 0.6);
-}
-
-/* 2. PARCHMENT BACKGROUND */
+/* Add a little spacing so content doesn't hide behind the fixed navbar */
 body {
-  padding-top: 120px !important;
-  background-color: var(--map-bg) !important;
-  background-image: url("https://www.transparenttextures.com/patterns/aged-paper.png");
-  color: var(--ink-color) !important;
-  font-family: 'IM Fell English SC', serif; /* Formal Map Text */
-  overflow-x: hidden;
+  padding-top: 80px;
+  background-color: #f8f9fa; /* Light gray professional background */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
-/* 3. INK TYPOGRAPHY */
-h1, h2, h3, .navbar-brand {
-  font-family: 'Satisfy', cursive;
-  font-weight: bold;
-  letter-spacing: 1px;
+h1, h2, h3, h4, h5, h6 {
+  color: #333;
 }
 
-p, .lead, .card-text {
-  font-family: 'IM Fell English SC', serif;
-  font-size: 1.2rem;
-}
-
-/* 4. THE MAP FOLDS (Containers) */
-.container, .card {
-  background: transparent !important;
-  box-shadow: none !important;
-  border: none !important;
-}
-
-/* Draw lines to simulate map folds or sections */
 .card {
-  border: 2px solid var(--ink-color) !important;
-  border-radius: 5px;
-  position: relative;
-  background-color: rgba(255, 255, 255, 0.2) !important; /* Slight transparency */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  border: none;
+  transition: transform 0.2s;
 }
 
-/* 5. FOOTPRINT ANIMATION (The Core Feature) */
-@keyframes walk {
-  0% { opacity: 0; transform: translateY(10px) rotate(10deg); }
-  50% { opacity: 1; }
-  100% { opacity: 0; transform: translateY(-20px) rotate(10deg); }
-}
-
-.footprints {
-  font-size: 1.5rem;
-  color: var(--footprint-color);
-  opacity: 0;
-  position: absolute;
-  bottom: 10px;
-  right: 20px;
-}
-
-.nav-link:hover .footprints {
-  animation: walk 1.5s infinite linear;
-  opacity: 1;
-}
-
-/* 6. BUTTONS (Hand-drawn look) */
-.btn {
-  font-family: 'Homemade Apple', cursive;
-  border: 2px solid var(--ink-color);
-  background: transparent;
-  color: var(--ink-color);
-  border-radius: 2px; /* Sharp edges */
-  padding: 10px 20px;
-  font-weight: bold;
-}
-
-.btn:hover {
-  background-color: var(--ink-color);
-  color: var(--map-bg);
+.card:hover {
+  transform: translateY(-5px);
 }
