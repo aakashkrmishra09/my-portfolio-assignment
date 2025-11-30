@@ -50,8 +50,8 @@ const MyNavbar = ({ isLoggedIn, handleLogout }) => {
                 <Nav.Link as={Link} to="/login" className="btn border-0 mx-2" style={{ fontFamily: 'Homemade Apple', color: '#4a2c2a' }}>
                   I Solemnly Swear (Login)
                 </Nav.Link>
-                <Nav.Link as={Link} to="/register" className="btn border-0" style={{ fontFamily: 'Homemade Apple', color: '#4a2c2a' }}>
-                  Register
+                <Nav.Link 
+                   as={Link} to="/register" className="btn border-0" style={{ fontFamily: 'Homemade Apple', marginLeft: '10px' }}> The Sorting Hat (Register)
                 </Nav.Link>
               </>
             )}
